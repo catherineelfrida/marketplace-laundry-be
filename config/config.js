@@ -1,6 +1,6 @@
 const config = {
   app: {
-    port: process.env.PORT || 80
+    port: process.env.PORT
   },
   jwt: {
     key: process.env.JWT_SECRET_KEY
