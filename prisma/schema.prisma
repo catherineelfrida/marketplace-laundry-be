@@ -1,0 +1,138 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id String     @id // primary key
+  username String @unique
+  password String
+  role UserRole
+  profile profile?
+  store store?
+  transaction transaction[]
+}
+
+model profile {
+  id String   @id // primary key
+  name String
+  address String
+  telephone String
+  latitude Float
+  longitude Float
+  user_id String @unique
+  user user @relation(fields: [user_id], references: [id])
+}
+
+model store { 
+  id String   @id // primary key
+  store_name String
+  address String
+  telephone String
+  latitude Float
+  longitude Float
+  open_time DateTime 
+  close_time DateTime
+  service_type service_type[]
+  service_item service_item[]
+  service_duration service_duration[]
+  seller_id String @unique
+  seller user @relation(fields: [seller_id], references: [id])
+  service service[]
+  transaction transaction[]
+}
+
+model service_type {
+  id String   @id // primary key
+  service_name String // (1)Laundry, (2)Dry Cleaning, (3)Ironing, (4)Washing, (5)Dryer, (6)lainnya
+  description String?
+  store_id String
+  store store @relation(fields: [store_id], references: [id])
+  service service[]
+}
+
+model service_item {
+  id String @id // primary key
+  item_name String // (1)baju, (2)sepatu, (3)tas, (4)selimut, (5)bed cover, (6)gordyn, (7)boneka, (8)lainnya
+  store_id String
+  store store @relation(fields: [store_id], references: [id])
+  service service[]
+}
+
+model service_duration {
+  id String @id // primary key
+  duration_name String // same day service(6 hours), reguler service(2 days), express service(2 hours)
+  hour Int // 6, 48, 2
+  description String
+  store_id String
+  store store @relation(fields: [store_id], references: [id])
+  service service[]
+}
+
+model service {
+  id String @id // primary key
+  rate Float // harga satuan
+  store_id String
+  service_type_id String
+  service_item_id String
+  service_duration_id String
+  store store @relation(fields: [store_id], references: [id])
+  service_type service_type @relation(fields: [service_type_id], references: [id])
+  service_item service_item @relation(fields: [service_item_id], references: [id])
+  service_duration service_duration @relation(fields: [service_duration_id], references: [id])
+  transaction_detail transaction_detail[]
+}
+
+model transaction {
+  id String @id // primary key
+  status TransactionStatus
+  start_date DateTime
+  end_date DateTime?
+  total Float // total = sum(amount)
+  payment_status PaymentStatus
+  payment_date DateTime?
+  customer_id String
+  store_id String
+  customer user @relation(fields: [customer_id], references: [id])
+  store store @relation(fields: [store_id], references: [id])
+  transaction_detail transaction_detail[]
+}
+
+model transaction_detail {
+  id String @id // primary key
+  quantity Int
+  amount Float // amount = rate * quantity
+  note String
+  transaction_id String
+  service_id String 
+  transaction transaction @relation(fields: [transaction_id], references: [id])
+  service service @relation(fields: [service_id], references: [id])
+}
+
+enum UserRole {
+  ADMIN
+  CUSTOMER
+  SELLER
+}
+
+enum TransactionStatus {
+  EXPIRED
+  PENDING_DELIVERY
+  PENDING_PROCESSING
+  IN_PROGRESS
+  READY_FOR_PICKUP
+  COMPLETED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+}
