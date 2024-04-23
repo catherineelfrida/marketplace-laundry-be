@@ -5,7 +5,7 @@ const config = require('./config/config.js')
 
 const app = express()
 
-const host = process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0';
+// const host = process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0';
 const port = config.app.port
 
 const corsOptions = {
@@ -21,8 +21,8 @@ app.use(cors(corsOptions));
 
 app.use(routers)
 
-app.listen(host, port, () => {
-  console.log(`Server is running at http://${host}:${port}`)
+app.listen(port, () => {
+  console.log(`Server is running at ${port}`)
 })
 
 module.exports = app
