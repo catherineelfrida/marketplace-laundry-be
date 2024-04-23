@@ -9,7 +9,7 @@ const host = process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0';
 const port = config.app.port
 
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN,
+  origin: '*',
   methods: '*',
   credentials: true
 }
