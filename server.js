@@ -9,7 +9,7 @@ const app = express()
 const port = config.app.port
 
 const corsOptions = {
-  origin: '*',
+  origin: process.env.CORS_ORIGIN,
   methods: '*',
   credentials: true
 }
