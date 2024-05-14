@@ -13,7 +13,6 @@ const transactions = require('./transactions')
 const sellerServices = require('./seller/services')
 const report = require('./seller/reports')
 const dashboard = require('./dashboard')
-const items = require('../controller/api/v1/seller/items')
 
 router.use('/api/v1', auth)
 router.use('/api/v1', users)
