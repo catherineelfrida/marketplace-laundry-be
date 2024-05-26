@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client')
-const { generateId } = require('../../../../middleware/code')
+const { generateId } = require('../../../../middleware/uuid')
 const prisma = new PrismaClient()
 
 module.exports = {
