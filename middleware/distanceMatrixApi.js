@@ -14,7 +14,7 @@ async function calculateDistance(origins, destinations) {
 
     return response.data;
   } catch (error) {
-    throw new Error('Error while fetching distance matrix data');
+    throw new Error('Internal server error');
   }
 }
 

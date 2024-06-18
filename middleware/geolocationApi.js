@@ -22,7 +22,7 @@ async function getGeolocation(address) {
       }
       return location
     } else {
-      throw new Error('No geolocation data found for the given address');
+      throw new Error('Internal server error');
     }
   } catch (error) {
     console.error(error);
