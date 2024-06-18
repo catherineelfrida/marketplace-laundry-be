@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken')
 const { PrismaClient } = require('@prisma/client')
 const { encryptPassword, checkPassword } = require('../../../middleware/auth')
 const { JWTsign } = require('../../../middleware/jwt')
